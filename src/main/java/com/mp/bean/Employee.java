@@ -1,6 +1,7 @@
 package com.mp.bean;
 
 
+import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
@@ -24,10 +25,15 @@ public class Employee {
      */
 //    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
+    @TableField(value = "last_name")
     private String lastName;
     private String email;
     private String gender;
     private Integer age;
+
+    @TableField(exist = false)
+    private Double salary;
+
 
     public Employee() {
     }
@@ -88,5 +94,13 @@ public class Employee {
 
     public void setAge(Integer age) {
         this.age = age;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
 }
