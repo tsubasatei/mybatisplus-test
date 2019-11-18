@@ -1,5 +1,14 @@
 package com.mp.test;
 
+import com.baomidou.mybatisplus.entity.GlobalConfiguration;
+import com.baomidou.mybatisplus.enums.IdType;
+import com.baomidou.mybatisplus.generator.AutoGenerator;
+import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
+import com.baomidou.mybatisplus.generator.config.GlobalConfig;
+import com.baomidou.mybatisplus.generator.config.PackageConfig;
+import com.baomidou.mybatisplus.generator.config.StrategyConfig;
+import com.baomidou.mybatisplus.generator.config.rules.DbType;
+import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
@@ -21,6 +30,58 @@ public class TestMP {
 
     private ApplicationContext ioc = new ClassPathXmlApplicationContext("beans.xml");
     private EmployeeMapper employeeMapper = ioc.getBean("employeeMapper", EmployeeMapper.class);
+
+    /**
+     * 代码生成 示例代码
+     */
+    @Test
+    public void testGenerator () {
+        // 1. 全局配置
+        GlobalConfig globalConfig = new GlobalConfig();
+        globalConfig.setActiveRecord(true) // 是否支持 AR 模式
+                    .setAuthor("xt") // 作者
+                    .setOutputDir("D:\\ideaProjects\\mybatisplus-test\\src\\main\\java") // 生成路径
+                    .setFileOverride(true)   // 文件覆盖
+                    .setIdType(IdType.AUTO)  // 主键策略
+                    .setServiceName("%sService")  // 设置生成的 service 接口的名字的首字母是否为 I, 如 IEmployeeService
+                    .setBaseResultMap(true)
+                    .setBaseColumnList(true);
+
+        // 2. 数据源配置
+        DataSourceConfig dataSourceConfig = new DataSourceConfig();
+        dataSourceConfig.setDbType(DbType.MYSQL)   // 设置数据库类型
+                .setDriverName("com.mysql.cj.jdbc.Driver")
+                .setUrl("jdbc:mysql:///mp")
+                .setUsername("root")
+                .setPassword("root");
+
+        // 3. 策略配置
+        StrategyConfig strategyConfig = new StrategyConfig();
+        strategyConfig.setCapitalMode(true)  // 全局大写命名
+                      .setDbColumnUnderline(true)  // 指定表名 字段名是否使用下划线
+                      .setNaming(NamingStrategy.underline_to_camel) // 数据库表映射到实体的命名策略
+                      .setTablePrefix("tbl")  // 表前缀
+                      .setInclude("tbl_employee");  // 生成的表
+
+        // 4. 包名策略配置
+        PackageConfig packageConfig = new PackageConfig();
+        packageConfig.setParent("com.xt.mp")
+                .setMapper("mapper")
+                .setService("service")
+                .setController("controller")
+                .setEntity("bean")
+                .setXml("mapper");
+
+        // 5. 整合配置
+        AutoGenerator autoGenerator = new AutoGenerator();
+        autoGenerator.setGlobalConfig(globalConfig)
+                .setDataSource(dataSourceConfig)
+                .setStrategy(strategyConfig)
+                .setPackageInfo(packageConfig);
+
+        // 6. 执行
+        autoGenerator.execute();
+    }
 
     /**
      * AR  分页复杂操作

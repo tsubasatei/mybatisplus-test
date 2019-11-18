@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+
+
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+
+    <!--<context:component-scan base-package="com.mp">-->
+    <context:component-scan base-package="com.xt.mp">
+        <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+        <context:exclude-filter type="annotation" expression="org.springframework.web.bind.annotation.ControllerAdvice"/>
+    </context:component-scan>
+
+    <!-- 数据源 -->
+    <context:property-placeholder location="classpath:db.properties"/>
+
+    <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+        <property name="jdbcUrl" value="${jdbc.url}"/>
+        <property name="driverClass" value="${jdbc.driver}"/>
+    </bean>
+
+    <!-- 事务管理器 -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <!-- 基于注解的事务管理 -->
+    <tx:annotation-driven></tx:annotation-driven>
+
+    <!--
+        配置 SqlSessionFactoryBean
+            mybatis: org.mybatis.spring.SqlSessionFactoryBean
+            mybatis-plus: com.baomidou.mybatisplus.extension.spring.MybatisSqlSessionFactoryBean
+    -->
+    <bean id="sqlSessionFactoryBean" class="com.baomidou.mybatisplus.spring.MybatisSqlSessionFactoryBean">
+        <!-- 数据源 -->
+        <property name="dataSource" ref="dataSource"/>
+
+        <property name="configLocation" value="classpath:mybatis-config.xml"/>
+
+        <!-- 别名处理 -->
+        <property name="typeAliasesPackage" value="com.mp.bean"/>
+
+        <!-- 注入 mp 的 全局策略配置 -->
+        <property name="globalConfig" ref="globalConfiguration"/>
+
+    </bean>
+
+    <!-- 定义 MybatisPlus 的全局策略配置 -->
+    <bean id="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
+        <!-- 在 2.3 半杯以后，dbColumnUnderline 的默认值就是 true -->
+        <property name="dbColumnUnderline" value="true"/>
+
+        <!-- 全局的主键策略 -->
+        <property name="idType" value="0"/>
+
+        <!-- 全局的表前缀 -->
+        <property name="tablePrefix" value="tbl_"/>
+    </bean>
+
+    <!-- 配置 mybatis 扫描 mapper接口的路径 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.xt.mp.mapper"/>
+    </bean>
+
+    <!--<mybatis-spring:component-scan base-package="com.mp.mapper"/>-->
+
+</beans>
