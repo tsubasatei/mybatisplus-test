@@ -1,5 +1,7 @@
 package com.mp.test;
 
+import com.baomidou.mybatisplus.mapper.Condition;
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mp.bean.Employee;
 import com.mp.mapper.EmployeeMapper;
@@ -19,6 +21,74 @@ public class TestMP {
 
     private ApplicationContext ioc = new ClassPathXmlApplicationContext("beans.xml");
     private EmployeeMapper employeeMapper = ioc.getBean("employeeMapper", EmployeeMapper.class);
+
+    /**
+     * 条件构造器 删除操作
+     */
+    @Test
+    public void testEntityWrapperDelete () {
+        employeeMapper.delete(new EntityWrapper<Employee>()
+                .eq("last_name", "Tom")
+                .eq("age", 40));
+    }
+
+    /**
+     * 条件构造器 修改操作
+     */
+    @Test
+    public void testEntityWrapperUpdate () {
+        Employee employee = new Employee();
+        employee.setLastName("Jerry");
+        employee.setEmail("jerry@163.com");
+        employee.setGender("0");
+        employeeMapper.update(employee,
+                new EntityWrapper<Employee>()
+                        .eq("last_name", "Tom")
+                        .eq("age", 30));
+    }
+
+    /**
+     * 条件构造器 查询操作
+     * EntityWrapper ：使用的是数据库字段，不是 Java属性 !
+     */
+    @Test
+    public void testEntityWrapperSelect () {
+        // 分页查询 tbl_employee 表中，年龄在18~50之间且性别为男且姓名为 Tom 的所有用户
+        List<Employee> employees = employeeMapper.selectPage(new Page<Employee>(1, 2),
+                new EntityWrapper<Employee>()
+                        .between("age", 18, 50)
+                        .eq("gender", "1")
+                        .eq("last_name", "Tom"));
+        employees.forEach(System.out::println);
+
+        List<Employee> emps = employeeMapper.selectPage(new Page<Employee>(1, 2),
+                Condition.create()
+                        .between("age", 18, 50)
+                        .eq("gender", "1")
+                        .eq("last_name", "Tom"));
+        emps.forEach(System.out::println);
+
+        System.out.println("================");
+        // 查询 tbl_employee 表中，性别为女并且名字中带有“老师” 或者邮箱中带有“a”
+        List<Employee> employees1 = employeeMapper.selectList(new EntityWrapper<Employee>()
+                .eq("gender", "0")
+                .like("last_name", "老师")
+//                .or()       // gender = ? AND last_name LIKE ? OR email LIKE ?
+                .orNew()      // (gender = ? AND last_name LIKE ?) OR (email LIKE ?)
+                .like("email", "a"));
+        employees1.forEach(System.out::println);
+
+        System.out.println("===========");
+
+        // 查询性别为女的，根据 age 进行排序（asc/desc），简单分页
+        List<Employee> employees2 = employeeMapper.selectList(new EntityWrapper<Employee>()
+                .eq("gender", "0")
+                .orderBy("age")
+//                .orderDesc(Arrays.asList("age"))
+                .last("desc limit 0, 3") // limit 初始偏移量为 0
+        );
+        employees2.forEach(System.out::println);
+    }
 
     /**
      * 通用删除操作 Delete
