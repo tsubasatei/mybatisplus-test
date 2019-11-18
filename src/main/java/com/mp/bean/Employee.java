@@ -1,10 +1,13 @@
 package com.mp.bean;
 
 
+import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.enums.IdType;
+
+import java.io.Serializable;
 
 /**
  * javaBean
@@ -15,9 +18,12 @@ import com.baomidou.mybatisplus.enums.IdType;
  *          boolean ==> false
  *
  * @TableName : MybatisPlus 会默认使用实体类的类名到数据中查找对应的表
+ *
+ * 使用 AR 模式：仅仅需要让实体类继承 Model类且实现主键指定方法，即可开启
  */
 //@TableName(value = "tbl_employee")
-public class Employee {
+public class Employee extends Model<Employee> {
+
     /**
      * @TableId :
      *      value: 指定表中的主键列的列名，如果实体属性名与列名一致，可以省略不指定
@@ -25,7 +31,7 @@ public class Employee {
      */
 //    @TableId(value = "id", type = IdType.AUTO)
     private Integer id;
-    @TableField(value = "last_name")
+//    @TableField(value = "last_name")
     private String lastName;
     private String email;
     private String gender;
@@ -36,6 +42,15 @@ public class Employee {
 
 
     public Employee() {
+    }
+
+    /**
+     * 指定主键
+     * @return
+     */
+    @Override
+    protected Serializable pkVal() {
+        return id;
     }
 
     public Employee(String lastName, String email, String gender, Integer age) {

@@ -23,6 +23,94 @@ public class TestMP {
     private EmployeeMapper employeeMapper = ioc.getBean("employeeMapper", EmployeeMapper.class);
 
     /**
+     * AR  分页复杂操作
+     */
+    @Test
+    public void  testARPage() {
+        Employee employee = new Employee();
+        Page<Employee> employeePage = employee.selectPage(new Page<>(1, 2),
+                new EntityWrapper<Employee>().like("last_name", "e"));
+        employeePage.getRecords().forEach(System.out::println);
+    }
+
+    /**
+     * AR 删除操作
+     *
+     * 注意: 删除不存在的数据 逻辑上也是属于成功的.
+     */
+    @Test
+    public void testARDelete() {
+        Employee employee = new Employee();
+//        boolean result = employee.deleteById(20);
+
+//        employee.setId(17);
+//        boolean result = employee.deleteById();
+//        System.out.println("result: " + result);
+
+        // like 不区分大小写
+        boolean result = employee.delete(new EntityWrapper().like("last_name", "tom"));
+        System.out.println("result: " + result);
+
+    }
+
+    /**
+     * AR 查询操作
+     */
+    @Test
+    public void testARSelect () {
+        Employee employee = new Employee();
+//        Employee emp = employee.selectById(20);
+
+        employee.setId(20);
+        Employee emp = employee.selectById();
+        System.out.println(emp);
+
+        System.out.println("===========");
+
+        List<Employee> employees = employee.selectAll();
+        employees.forEach(System.out::println);
+
+        System.out.println("===========");
+        List<Employee> list = employee.selectList(new EntityWrapper().like("last_name", "e"));
+        list.forEach(System.out::println);
+
+        System.out.println("==========");
+
+        int count = employee.selectCount(new EntityWrapper().eq("gender", 0));
+        System.out.println("count: " + count);
+    }
+
+    /**
+     * AR  修改操作
+     */
+    @Test
+    public void testARUpdate () {
+        Employee employee = new Employee();
+        employee.setId(20);
+        employee.setLastName("Sanae2");
+        employee.setEmail("sanae2@163.com");
+        employee.setGender("1");
+        employee.setAge(30);
+        boolean result = employee.updateById();
+        System.out.println("result: " + result);
+    }
+
+
+    /**
+     * AR  插入操作
+     */
+    @Test
+    public void testARInsert () {
+        Employee employee = new Employee();
+        employee.setLastName("Sanae");
+        employee.setEmail("sanae@163.com");
+        employee.setGender("0");
+        employee.setAge(30);
+        boolean result = employee.insert();
+        System.out.println("result: " + result);
+    }
+
+    /**
      * 条件构造器 删除操作
      */
     @Test
@@ -94,7 +182,7 @@ public class TestMP {
      * 通用删除操作 Delete
      */
     @Test
-    public void testDelete () {
+    public void testCommonDelete () {
         // 1. 根据 id 进行删除
 //        Integer result = employeeMapper.deleteById(16);
 //        System.out.println(result);
@@ -115,7 +203,7 @@ public class TestMP {
      * 通用查询操作：Select
      */
     @Test
-    public void testSelect () {
+    public void testCommonSelect () {
 
         // 1. 通过 id 查询
         Employee employee = employeeMapper.selectById(7);
