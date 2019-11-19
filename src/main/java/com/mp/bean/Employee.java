@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.activerecord.Model;
 import com.baomidou.mybatisplus.annotations.TableField;
 import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.annotations.Version;
 import com.baomidou.mybatisplus.enums.IdType;
 
 import java.io.Serializable;
@@ -40,6 +41,29 @@ public class Employee extends Model<Employee> {
     @TableField(exist = false)
     private Double salary;
 
+    @Version
+    private Integer version;
+
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", email='" + email + '\'' +
+                ", gender='" + gender + '\'' +
+                ", age=" + age +
+                ", salary=" + salary +
+                ", version=" + version +
+                '}';
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
 
     public Employee() {
     }
@@ -58,17 +82,6 @@ public class Employee extends Model<Employee> {
         this.email = email;
         this.gender = gender;
         this.age = age;
-    }
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", gender='" + gender + '\'' +
-                ", age=" + age +
-                '}';
     }
 
     public Integer getId() {

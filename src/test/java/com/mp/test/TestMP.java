@@ -32,6 +32,72 @@ public class TestMP {
     private EmployeeMapper employeeMapper = ioc.getBean("employeeMapper", EmployeeMapper.class);
 
     /**
+     * 测试 乐观锁插件
+     */
+
+    @Test
+    public void testOptimisticLocker() {
+        Employee employee = new Employee();
+        employee.setId(6);
+        employee.setLastName("高桥老师");
+        employee.setEmail("hashi@sina.com");
+        employee.setGender("0");
+        employee.setAge(30);
+        employee.setVersion(2);
+
+        Integer result = employeeMapper.updateById(employee);
+        System.out.println("result: " + result);
+        System.out.println(employee);
+    }
+
+    /**
+     * 测试 性能分析插件
+     */
+    @Test
+    public void testPerformance() {
+        Employee employee = new Employee();
+        employee.setLastName("玛利亚老师");
+        employee.setEmail("mly@sina.com");
+        employee.setGender("0");
+        employee.setAge(22);
+
+        employeeMapper.insert(employee);
+
+    }
+
+    /**
+     * 测试SQL执行分析插件
+     */
+    @Test
+    public void testSQLExplain() {
+        Integer result = employeeMapper.delete(null);
+        System.out.println("result: " + result);
+    }
+
+    /**
+     * 测试分页插件
+     */
+    @Test
+    public void testPage() {
+        Page<Employee> page = new Page<>(1, 1);
+        List<Employee> employees = employeeMapper.selectPage(page, null);
+
+        employees.forEach(System.out::println);
+
+        System.out.println("===============获取分页相关的一些信息======================");
+
+        System.out.println("总条数:" + page.getTotal());
+        System.out.println("当前页码: "+ page.getCurrent());
+        System.out.println("总页码:" + page.getPages());
+        System.out.println("每页显示的条数:" + page.getSize());
+        System.out.println("是否有上一页: " + page.hasPrevious());
+        System.out.println("是否有下一页: " + page.hasNext());
+
+        //将查询的结果封装到page对象中
+        page.setRecords(employees);
+    }
+
+    /**
      * 代码生成 示例代码
      */
     @Test

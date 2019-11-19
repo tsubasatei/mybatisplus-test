@@ -44,6 +44,28 @@
         <!-- 注入 mp 的 全局策略配置 -->
         <property name="globalConfig" ref="globalConfiguration"/>
 
+        <!-- 插件注册 -->
+        <property name="plugins">
+            <list>
+                <!-- 注册分页插件 -->
+                <bean class="com.baomidou.mybatisplus.plugins.PaginationInterceptor"></bean>
+
+                <!-- 注册执行分析插件 -->
+                <bean class="com.baomidou.mybatisplus.plugins.SqlExplainInterceptor">
+                    <property name="stopProceed" value="true"/>
+                </bean>
+
+                <!-- 注册性能分析插件 -->
+                <bean class="com.baomidou.mybatisplus.plugins.PerformanceInterceptor">
+                    <property name="format" value="true"/>
+                    <!-- 执行时间 ms -->
+                    <!--<property name="maxTime" value="10"/>-->
+                </bean>
+
+                <!-- 注册乐观锁插件 -->
+                <bean class="com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor"></bean>
+            </list>
+        </property>
     </bean>
 
     <!-- 定义 MybatisPlus 的全局策略配置 -->
@@ -56,6 +78,7 @@
 
         <!-- 全局的表前缀 -->
         <property name="tablePrefix" value="tbl_"/>
+
     </bean>
 
     <!-- 配置 mybatis 扫描 mapper接口的路径 -->
