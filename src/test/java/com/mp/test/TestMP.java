@@ -13,7 +13,9 @@ import com.baomidou.mybatisplus.mapper.Condition;
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.baomidou.mybatisplus.plugins.Page;
 import com.mp.bean.Employee;
+import com.mp.bean.User;
 import com.mp.mapper.EmployeeMapper;
+import com.mp.mapper.UserMapper;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -30,11 +32,33 @@ public class TestMP {
 
     private ApplicationContext ioc = new ClassPathXmlApplicationContext("beans.xml");
     private EmployeeMapper employeeMapper = ioc.getBean("employeeMapper", EmployeeMapper.class);
+    private UserMapper userMapper = ioc.getBean("userMapper", UserMapper.class);
+
+    /**
+     * 测试逻辑删除
+     */
+    @Test
+    public void testLogicDelete() {
+
+		Integer result = userMapper.deleteById(2);
+		System.out.println("result:" +result );
+
+        User user = userMapper.selectById(2);
+        System.out.println(user);
+    }
+
+    /**
+     * 测试自定义全局操作
+     */
+    @Test
+    public void testMySqlInjector() {
+        int result = employeeMapper.deleteAll();
+        System.out.println("result: " + result);
+    }
 
     /**
      * 测试 乐观锁插件
      */
-
     @Test
     public void testOptimisticLocker() {
         Employee employee = new Employee();

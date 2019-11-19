@@ -52,7 +52,7 @@
 
                 <!-- 注册执行分析插件 -->
                 <bean class="com.baomidou.mybatisplus.plugins.SqlExplainInterceptor">
-                    <property name="stopProceed" value="true"/>
+                    <!--<property name="stopProceed" value="true"/>-->
                 </bean>
 
                 <!-- 注册性能分析插件 -->
@@ -66,8 +66,15 @@
                 <bean class="com.baomidou.mybatisplus.plugins.OptimisticLockerInterceptor"></bean>
             </list>
         </property>
+        
     </bean>
 
+    <!-- 定义自定义注入器 -->
+    <bean id="mySqlInjector" class="com.mp.injector.MySqlInjector"></bean>
+
+    <!-- 逻辑删除 -->
+    <bean id="logicSqlInjector" class="com.baomidou.mybatisplus.mapper.LogicSqlInjector"/>
+    
     <!-- 定义 MybatisPlus 的全局策略配置 -->
     <bean id="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
         <!-- 在 2.3 半杯以后，dbColumnUnderline 的默认值就是 true -->
@@ -78,6 +85,16 @@
 
         <!-- 全局的表前缀 -->
         <property name="tablePrefix" value="tbl_"/>
+
+        <!-- 注入自定义全局操作 -->
+        <!--<property name="sqlInjector" ref="mySqlInjector"/>-->
+
+        <!-- 注入逻辑删除 -->
+        <property name="sqlInjector" ref="logicSqlInjector"/>
+
+        <!-- 注入逻辑删除全局值 -->
+        <property name="logicDeleteValue" value="-1"/>
+        <property name="logicNotDeleteValue" value="1"/>
 
     </bean>
 

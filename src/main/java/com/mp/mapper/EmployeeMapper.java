@@ -12,4 +12,6 @@ import com.mp.bean.Employee;
  *          BaseMapper<T>: 泛型指定当前 Mapper 接口所操作的实体类类型
  */
 public interface EmployeeMapper extends BaseMapper<Employee> {
+
+    int deleteAll();
 }
