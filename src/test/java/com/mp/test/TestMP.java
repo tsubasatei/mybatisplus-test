@@ -1,6 +1,5 @@
 package com.mp.test;
 
-import com.baomidou.mybatisplus.entity.GlobalConfiguration;
 import com.baomidou.mybatisplus.enums.IdType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.config.DataSourceConfig;
@@ -33,6 +32,21 @@ public class TestMP {
     private ApplicationContext ioc = new ClassPathXmlApplicationContext("beans.xml");
     private EmployeeMapper employeeMapper = ioc.getBean("employeeMapper", EmployeeMapper.class);
     private UserMapper userMapper = ioc.getBean("userMapper", UserMapper.class);
+
+    /**
+     * 测试公共字段填充
+     */
+    @Test
+    public void testMetaObjectHandler() {
+        User user = new User();
+//        user.setUsername("Tom");
+
+        user.setId(5);
+        user.setLogicFlag(1);
+
+//        userMapper.insert(user);
+        userMapper.updateById(user);
+    }
 
     /**
      * 测试逻辑删除

@@ -74,6 +74,8 @@
 
     <!-- 逻辑删除 -->
     <bean id="logicSqlInjector" class="com.baomidou.mybatisplus.mapper.LogicSqlInjector"/>
+
+    <bean id="myMetaObjectHandler" class="com.mp.handler.MyMetaObjectHandler"/>
     
     <!-- 定义 MybatisPlus 的全局策略配置 -->
     <bean id="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
@@ -95,6 +97,9 @@
         <!-- 注入逻辑删除全局值 -->
         <property name="logicDeleteValue" value="-1"/>
         <property name="logicNotDeleteValue" value="1"/>
+
+        <!-- 注入公共字段填充处理器 -->
+        <property name="metaObjectHandler" ref="myMetaObjectHandler"/>
 
     </bean>
 
