@@ -7,6 +7,8 @@ import com.baomidou.mybatisplus.annotations.TableId;
 import com.baomidou.mybatisplus.annotations.TableName;
 import com.baomidou.mybatisplus.annotations.Version;
 import com.baomidou.mybatisplus.enums.IdType;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
@@ -23,6 +25,8 @@ import java.io.Serializable;
  * 使用 AR 模式：仅仅需要让实体类继承 Model类且实现主键指定方法，即可开启
  */
 //@TableName(value = "tbl_employee")
+@Data
+@NoArgsConstructor
 public class Employee extends Model<Employee> {
 
     /**
@@ -38,35 +42,15 @@ public class Employee extends Model<Employee> {
     private String gender;
     private Integer age;
 
+    /**
+     * @TableField(exist = false) : 表示当前属性不是数据库的字段，但在项目中必须使用，
+     * 这样在新增等使用 bean 的时候，mybatis-plus就会忽略这个，不会报错
+     */
     @TableField(exist = false)
     private Double salary;
 
     @Version
     private Integer version;
-
-    @Override
-    public String toString() {
-        return "Employee{" +
-                "id=" + id +
-                ", lastName='" + lastName + '\'' +
-                ", email='" + email + '\'' +
-                ", gender='" + gender + '\'' +
-                ", age=" + age +
-                ", salary=" + salary +
-                ", version=" + version +
-                '}';
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public void setVersion(Integer version) {
-        this.version = version;
-    }
-
-    public Employee() {
-    }
 
     /**
      * 指定主键
@@ -84,51 +68,4 @@ public class Employee extends Model<Employee> {
         this.age = age;
     }
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getGender() {
-        return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
-    }
-
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
-    public Double getSalary() {
-        return salary;
-    }
-
-    public void setSalary(Double salary) {
-        this.salary = salary;
-    }
 }

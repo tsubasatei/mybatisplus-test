@@ -3,8 +3,6 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
-
-
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
     <context:component-scan base-package="com.mp"/>
@@ -75,11 +73,12 @@
     <!-- 逻辑删除 -->
     <bean id="logicSqlInjector" class="com.baomidou.mybatisplus.mapper.LogicSqlInjector"/>
 
+    <!-- 元数据处理器接口 公共字段的自动填充 -->
     <bean id="myMetaObjectHandler" class="com.mp.handler.MyMetaObjectHandler"/>
     
     <!-- 定义 MybatisPlus 的全局策略配置 -->
     <bean id="globalConfiguration" class="com.baomidou.mybatisplus.entity.GlobalConfiguration">
-        <!-- 在 2.3 半杯以后，dbColumnUnderline 的默认值就是 true -->
+        <!-- 在 2.3 版本以后，dbColumnUnderline 的默认值就是 true -->
         <property name="dbColumnUnderline" value="true"/>
 
         <!-- 全局的主键策略 -->

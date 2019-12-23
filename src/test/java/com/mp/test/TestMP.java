@@ -444,7 +444,7 @@ public class TestMP {
          * insertAllColumn 方法：插入时，不管属性是否非空，属性所对应的字段都会出现到 SQL 语句中
          */
 //        int result = employeeMapper.insert(employee);
-        Integer result = employeeMapper.insertAllColumn(employee);
+        Integer result = employeeMapper.insertAllColumn(employee);  // 所有字段都被更新
         System.out.println(result);
 
         // 获取当前数据在数据库中的主键值
