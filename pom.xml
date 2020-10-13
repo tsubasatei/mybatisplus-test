@@ -15,7 +15,7 @@
         <maven.compiler.source>11</maven.compiler.source>
         <maven.compiler.target>11</maven.compiler.target>
         <mp.version>2.3</mp.version>
-        <junit.version>4.9</junit.version>
+        <junit.version>4.13.1</junit.version>
         <log4j.version>1.2.17</log4j.version>
         <c3p0.version>0.9.5.4</c3p0.version>
         <mysql.version>8.0.15</mysql.version>
